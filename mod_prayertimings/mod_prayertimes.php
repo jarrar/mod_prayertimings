@@ -8,5 +8,5 @@ defined('_JEXEC') or die;
 // Include the syndicate functions only once
 require_once dirname(__FILE__) . '/helper.php';
 
-$hello = modHelloWorldHelper::getHello($params);
-require JModuleHelper::getLayoutPath('mod_helloworld');
+$namaz_times = ModPrayerTimingsHelper::get_namaz_times($params);
+require JModuleHelper::getLayoutPath('mod_prayertimes');
