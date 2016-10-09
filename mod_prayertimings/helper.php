@@ -47,7 +47,7 @@ class NamazTime {
 		}
 
 		$iabat_long = self::IABAT_LONG;
-		$ibat_lat = self::IABAT_LAT;
+		$iabat_lat = self::IABAT_LAT;
 		$gmt = self::GMT;
 
 		$url = self::PRAYTIME_URL . "?lat=$iabat_lat&lon=$iabat_long&gmt=$gmt&m=$this->month&y=$this->year&school=0$days_option";
@@ -77,5 +77,12 @@ class ModPrayerTimingsHelper {
 		$namaz = new NamazTime();
 		return $namaz -> get_namaz_times_for_today();
 	}
+
+	public static function get_today_date($params) {
+		date_default_timezone_set('America/New_York');
+		$today = date("F j, Y, g:i a");
+		return $today;
+	}
+
 
 }
