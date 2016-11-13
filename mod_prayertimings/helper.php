@@ -25,8 +25,11 @@ class NamazTime {
 	const PRAYTIME_URL = "http://praytime.info/getprayertimes.php";
 	const IABAT_LAT = "35.839742";
 	const IABAT_LONG = "-78.893319";
-	const GMT = "-240";
-
+	
+// In DST -240 and when it is EST then -300
+    const GMT_DST = "-240";
+	const GMT_EST = "-300";
+    
 	function __construct() {
 		$this -> year = date("Y");
 		$this -> month = date("n");
@@ -36,10 +39,33 @@ class NamazTime {
 
 	}
 
+    /**
+     * returns True if the daylight savings (means in Spring when clocks go 1 hour forward) is active
+     * and False otherwise.
+     * @return type
+     */
 	public function is_daylight_savings() {
 		return date('I') == 1;
 	}
-
+    
+    /**
+     * A method to get the present GMT value to be used for IABAT Namaz Timings. The value when the
+     * Daylight Savings is On (means in Spring when clocks go 1 hour forward) we need to use -240
+     * and when it is not on we gotta use -300.
+     * @return type
+     */
+	private function get_gmt_value()
+	{
+		$my_gmt = self::GMT_EST;
+		
+		if (self::is_daylight_savings())
+		{
+			$my_gmt=self::GMT_DST;
+		}
+		
+		return $my_gmt;
+	}
+	
 	private function namaz_times($day = "all") {
 		$days_option = "";
 		if ($day != "all") {
@@ -48,7 +74,7 @@ class NamazTime {
 
 		$iabat_long = self::IABAT_LONG;
 		$iabat_lat = self::IABAT_LAT;
-		$gmt = self::GMT;
+		$gmt = self::get_gmt_value();
 
 		$url = self::PRAYTIME_URL . "?lat=$iabat_lat&lon=$iabat_long&gmt=$gmt&m=$this->month&y=$this->year&school=0$days_option";
 
@@ -81,7 +107,7 @@ class ModPrayerTimingsHelper {
 	public static function get_today_date($params) {
 		date_default_timezone_set('America/New_York');
 		//$today = date("F j, Y, g:i a");
-		$today = date("j/n/y  g:i a");
+		$today = date("M/d/y g:i a");
 		
 		return $today;
 	}

@@ -56,6 +56,7 @@ table.namaz, th.namaz, td.namaz, tr.namaz {
 	<tr><td class="namaz">
 	<table class="namaz" cellpadding="0" cellspacing="0" style="padding: 0px>
 		<?php
+        
 		foreach ($namaz_times as $key => $value) {
 			echo "<TR class=\"namaz\" align=\"right\">";
 			echo "<td class=\"namaz\">{$key}:</td>";
