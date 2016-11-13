@@ -80,7 +80,9 @@ class ModPrayerTimingsHelper {
 
 	public static function get_today_date($params) {
 		date_default_timezone_set('America/New_York');
-		$today = date("F j, Y, g:i a");
+		//$today = date("F j, Y, g:i a");
+		$today = date("j/n/y  g:i a");
+		
 		return $today;
 	}
 

@@ -30,36 +30,42 @@ td {
 	text-decoration:underline;
 
 }
-</style>
 
-<!--?php echo $hello; ?-->
-<table align="center">
-	<tr><td align="left"><?php echo $today_date?></td></tr>
-	<tr><td align="center">
-	<table align="left" cellSpacing="0" cellPadding="0" width="100" border="0">
-		<!--table id="namazTable" cellSpacing="0" cellPadding="0" width="0" border="0"-->
+.module-content {
+    padding: 0px;
+}
+
+.highlight {background-color: #f5f5f5}
+
+table.namaz, th.namaz, td.namaz, tr.namaz {
+    border: 0px solid black;
+    border-collapse: collapse;
+    font-family:tahoma;
+	font-size: 12px;
+	
+<!--
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 5px;
+-->
+
+</style>
+<table class="namaz" style="padding: 0px">
+	<tr><td class="namaz" width="200"><?php echo $today_date?></td></tr>
+	<tr><td class="namaz">
+	<table class="namaz" cellpadding="0" cellspacing="0" style="padding: 0px>
 		<?php
 		foreach ($namaz_times as $key => $value) {
-			echo "<TR align=\"center\">";
-			echo "<td>{$key}</td>";
+			echo "<TR class=\"namaz\" align=\"right\">";
+			echo "<td class=\"namaz\">{$key}:</td>";
 			$namaz_time = date('g:i', strtotime($value));
-			echo "<td>{$namaz_time}</td>";
+			echo "<td class=\"namaz\" align=\"right\">{$namaz_time}</td>";
 			echo "</TR>";
 		}
 		?>
-			<!--TR>
-				<?php
-				foreach ($namaz_times as $key => $value) {
-					# conversion into 12 Hr time
-					//$namaz_time = date('g:i a', strtotime($value));
-					$namaz_time = date('g:i', strtotime($value));
-
-					echo "<td>{$namaz_time}</td>";
-				}
-				?>
-			</TR-->
 		</table>
 		</tr>
 	</td>
 	</tr>
-</table>
+</table

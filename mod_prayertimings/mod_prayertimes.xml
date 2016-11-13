@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.1.0" client="site" method="upgrade">
-    <name>Shia Namaz Times</name>
+    <name>Namaz Times</name>
     <author>Jarrar Jaffari (IABAT)</author>
     <version>0.0.1</version>
     <description>A simple Shia Mulsim prayer timing module for Joomla.
-        features:
-            -) Automatically adjusts year changes
-            -) dsiplays times in 12 hour clock
-            -) Can display AM or PM
+        features: Automatically adjusts year changes,
+             dsiplays times in 12 hour clock,
+             Can display AM or PM.
     </description>
     <files>
         <filename>mod_prayertimes.xml</filename>
