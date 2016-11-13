@@ -15,6 +15,8 @@
 /**
  * TODO:
  * 	-) Parameterize Latitude, Longitude etc
+ *  -) Timezone is just limited to EST (New York)
+ *  -) Should have an XML/JSON based configuration
  */
 
 class NamazTime {
@@ -23,10 +25,11 @@ class NamazTime {
 	private $day = '';
 
 	const PRAYTIME_URL = "http://praytime.info/getprayertimes.php";
-	const IABAT_LAT = "35.839742";
+	
+    const IABAT_LAT = "35.839742";
 	const IABAT_LONG = "-78.893319";
 	
-// In DST -240 and when it is EST then -300
+    // In DST -240 and when it is EST then -300
     const GMT_DST = "-240";
 	const GMT_EST = "-300";
     
@@ -34,8 +37,8 @@ class NamazTime {
 		$this -> year = date("Y");
 		$this -> month = date("n");
 
-		$today = date("F j, Y, g:i a");
-		$day = date("j");
+		//$today = date("F j, Y, g:i a");
+		//$day = date("j");
 
 	}
 
@@ -66,7 +69,14 @@ class NamazTime {
 		return $my_gmt;
 	}
 	
-	private function namaz_times($day = "all") {
+    /**
+     * A method to get all Namaz times for a month or a day.
+     * When getting All month's Namaz times it does not take into account DST (perhaps it should)
+     * @param type $day
+     * @return type
+     */
+	private function namaz_times($day = "all") 
+    {
 		$days_option = "";
 		if ($day != "all") {
 			$days_option = "&d=$day";
@@ -75,7 +85,9 @@ class NamazTime {
 		$iabat_long = self::IABAT_LONG;
 		$iabat_lat = self::IABAT_LAT;
 		$gmt = self::get_gmt_value();
-
+        
+        // may be should check if the month is October or March and view is all then 
+        // make multiple calls for times to accomodate DST.
 		$url = self::PRAYTIME_URL . "?lat=$iabat_lat&lon=$iabat_long&gmt=$gmt&m=$this->month&y=$this->year&school=0$days_option";
 
 		$json = file_get_contents($url);
@@ -83,12 +95,21 @@ class NamazTime {
 		return $data;
 	}
 
+    /**
+     * A methodd to get today's Namaz times, it normalizes times for DST and such adjustments.
+     * @return type
+     */
 	public function get_namaz_times_for_today() {
 		$day = date("j");
 		return $this -> namaz_times($day);
 	}
 
-	// this is not tested yet - Jarrar
+    /**
+     * A method to get entire month's Namaz times.
+     * -) Does not normalize times for DST as getting DST or not based on the time when the call
+     *    is made. we should fix it.
+     * @return type
+     */
 	public function get_namaz_times_for_month() {
 		return $this -> namaz_times();
 	}
@@ -97,6 +118,7 @@ class NamazTime {
 
 class ModPrayerTimingsHelper {
 	/**
+     * A helper class to interface with mod_prayertimes.
 	 */
 	public static function get_namaz_times($params) {
 		date_default_timezone_set('America/New_York');
