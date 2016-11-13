@@ -15,6 +15,8 @@
         <filename>helper.php</filename>
         <filename>tmpl/default.php</filename>
         <filename>tmpl/index.html</filename>
+        <!--filename>conf/Settings.php</filename-->
+        
     </files>
     <config>
     </config>

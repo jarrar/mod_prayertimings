@@ -19,26 +19,32 @@
  *  -) Should have an XML/JSON based configuration
  */
 
-class NamazTime {
+interface Settings {
+  const ORG_TIME_ZONE = 'America/New_York';
+  
+  // co-ordinates of the location whose' namaz timings need to be displayed.
+  const ORG_LATITUDE = "35.839742";
+  const ORG_LONGITUDE = "-78.893319";
+ 
+  // GMT values, two values for DST and non DST that prayertime.info uses in its url for
+  // above location.
+  const GMT_DST = "-240";
+  const GMT_EST = "-300";
+}
+
+
+class NamazTime implements Settings
+{
 	private $year = '';
 	private $month = '';
 	private $day = '';
 
 	const PRAYTIME_URL = "http://praytime.info/getprayertimes.php";
 	
-    const IABAT_LAT = "35.839742";
-	const IABAT_LONG = "-78.893319";
-	
-    // In DST -240 and when it is EST then -300
-    const GMT_DST = "-240";
-	const GMT_EST = "-300";
-    
-	function __construct() {
+	function __construct() 
+    {
 		$this -> year = date("Y");
 		$this -> month = date("n");
-
-		//$today = date("F j, Y, g:i a");
-		//$day = date("j");
 
 	}
 
@@ -59,11 +65,11 @@ class NamazTime {
      */
 	private function get_gmt_value()
 	{
-		$my_gmt = self::GMT_EST;
+		$my_gmt = Settings::GMT_EST;
 		
 		if (self::is_daylight_savings())
 		{
-			$my_gmt=self::GMT_DST;
+			$my_gmt=Settings::GMT_DST;
 		}
 		
 		return $my_gmt;
@@ -82,8 +88,8 @@ class NamazTime {
 			$days_option = "&d=$day";
 		}
 
-		$iabat_long = self::IABAT_LONG;
-		$iabat_lat = self::IABAT_LAT;
+		$iabat_long = Settings::ORG_LONGITUDE;
+		$iabat_lat = Settings::ORG_LATITUDE;
 		$gmt = self::get_gmt_value();
         
         // may be should check if the month is October or March and view is all then 
@@ -116,18 +122,21 @@ class NamazTime {
 
 }
 
-class ModPrayerTimingsHelper {
+class ModPrayerTimingsHelper implements Settings
+{
 	/**
      * A helper class to interface with mod_prayertimes.
 	 */
 	public static function get_namaz_times($params) {
-		date_default_timezone_set('America/New_York');
+		//date_default_timezone_set('America/New_York');
+        date_default_timezone_set(Settings::ORG_TIME_ZONE);
+        
 		$namaz = new NamazTime();
 		return $namaz -> get_namaz_times_for_today();
 	}
 
 	public static function get_today_date($params) {
-		date_default_timezone_set('America/New_York');
+		date_default_timezone_set(Settings::ORG_TIME_ZONE);
 		//$today = date("F j, Y, g:i a");
 		$today = date("M/d/y g:i a");
 		
